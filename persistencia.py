@@ -1,20 +1,54 @@
 import json
+from cadastros import Clientes
 
 def salvar_json(cadastros_clientes,cadastros_veiculos,catalago,Solicitaçoes_serviço):
-    with open("cadastros_clientes.json", "w") as arquivo:
-        json.dump(cadastros_clientes, arquivo,ensure_ascii=False, indent=4)
-    with open("cadastros_veiculos.json","w") as arquivo:
+   dados_para_salvar={}
+   for cpf, dados in cadastros_clientes.items():
+       
+       dados_cliente=dados["cliente"].__dict__
+       id=dados["ID"]
+
+   
+       dados_para_salvar[cpf]={
+        "ID":id,
+        "cliente": dados_cliente
+         }
+    
+   with open("dados_para_salvar.json", "w") as arquivo:
+        json.dump(dados_para_salvar,arquivo,ensure_ascii=False, indent=4)
+        
+   with open("cadastros_veiculos.json","w") as arquivo:
         json.dump(cadastros_veiculos, arquivo, ensure_ascii=False, indent=4)
-    with open("catalogo.json","w") as arquivo:
+   with open("catalogo.json","w") as arquivo:
         json.dump(catalago, arquivo, ensure_ascii=False, indent=4)
-    with open("Solicitaçoes_serviço.json","w") as arquivo:
+   with open("Solicitaçoes_serviço.json","w") as arquivo:
         json.dump(Solicitaçoes_serviço, arquivo, ensure_ascii=False, indent=4)
 
 def carregar_json_clientes():
+    dic_temp={
+        
+    }
     try:
-        with open("cadastros_clientes.json", "r") as arquivo:
+        with open("dados_para_salvar.json", "r") as arquivo:
             clientes=json.load(arquivo)
-            return clientes
+            for cpf, dados in clientes.items():
+               atributos = dados["cliente"]
+               id = dados["ID"]
+               
+               
+               cliente = Clientes(
+               atributos["nome"],
+               atributos["cpf"],
+               atributos["telefone"]
+                                     )
+            
+               dic_temp[cpf]={
+                "cliente":cliente,
+                "ID":id }
+            
+        
+        return dic_temp
+    
     except FileNotFoundError:
         return {}
 def carregar_json_veiculos():

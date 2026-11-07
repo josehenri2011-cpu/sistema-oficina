@@ -93,7 +93,9 @@ def criar_cliente(cadastros_clientes,id):
         "ID":id,
         "cliente":cliente
     }
+    
     return id
+    
     
 
 def validar_cpf(cpf):
@@ -114,12 +116,18 @@ def registro_serviços(catalago):
     catalago.append(novo_serviço)    
     
  
-def ordem_serviço(id_ordens,Solicitaçoes_serviço):
+def ordem_serviço(id_ordens, Solicitaçoes_serviço, cadastros_veiculos):    
     id_ordens+=1
-    placa=input("insira a placa do veiculo")
-    serviço=input("quais serviço deseja solicitar? ")   
-    
+    while True:
+        placa=input("insira a placa do veiculo")
+        if placa not in cadastros_veiculos:
+            print("placa nao encontrada")
+        else:
+            break
             
+    
+    
+    serviço=input("quais serviço deseja solicitar? ")           
     Solicitaçoes_serviço[id_ordens]={
                 "placa":placa,
                 "serviço":[serviço]
@@ -128,8 +136,11 @@ def ordem_serviço(id_ordens,Solicitaçoes_serviço):
     
     while True:
         resposta=input("Deseja solicitar outro serviço? (s/n): ").strip().lower()
-        if resposta=="sim":
-            pass
+        if resposta == "sim":
+                serviço = input("Digite outro serviço: ")
+                Solicitaçoes_serviço[id_ordens]["serviço"].append(serviço)
+                        
+            
         elif resposta=="nao":
            return id_ordens
 
