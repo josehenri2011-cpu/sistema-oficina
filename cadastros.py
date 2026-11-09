@@ -32,11 +32,6 @@ def validar_placa():
 
 
 
-def placa_ja_cadastrada(placa,cadastros_veiculos):
-    """Verifica se a placa já existe no dicionário."""
-    if placa in cadastros_veiculos:
-        return True
-    return False
 
 
 # --- FUNÇÃO DE CADASTRO (Focada apenas no fluxo) ---
@@ -47,7 +42,7 @@ def criar_veiculo(cadastros_veiculos):
     while True:
         placa=validar_placa()
         
-        if placa_ja_cadastrada(placa):
+        if placa in cadastros_veiculos:
             print(f"❌ Erro: Já existe um veículo cadastrado com a placa {placa}.")
         else:
             break
