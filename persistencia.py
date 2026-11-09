@@ -2,23 +2,40 @@ import json
 from cadastros import Clientes
 
 def salvar_json(cadastros_clientes,cadastros_veiculos,catalago,Solicitaçoes_serviço):
-   dados_para_salvar={}
+   dados_salvar_clientes={}
    for cpf, dados in cadastros_clientes.items():
        
        dados_cliente=dados["cliente"].__dict__
        id=dados["ID"]
 
    
-       dados_para_salvar[cpf]={
+       dados_salvar_clientes[cpf]={
         "ID":id,
         "cliente": dados_cliente
          }
     
-   with open("dados_para_salvar.json", "w") as arquivo:
-        json.dump(dados_para_salvar,arquivo,ensure_ascii=False, indent=4)
+   with open("dados_salvar_clientes.json", "w") as arquivo:
+        json.dump(dados_salvar_clientes,arquivo,ensure_ascii=False, indent=4)
         
-   with open("cadastros_veiculos.json","w") as arquivo:
-        json.dump(cadastros_veiculos, arquivo, ensure_ascii=False, indent=4)
+   
+   dados_salvar_veiculos={}
+   
+   for placa, dados in cadastros_veiculos.items():
+        placa=placa
+        dados_veiculos=dados.__dict__
+        
+        
+        dados_salvar_veiculos[placa]={
+            "dados_veiculos":dados_veiculos,
+            
+        }
+        
+        
+   with open("dados_salvar_veiculos.json","w") as arquivo:
+        json.dump(dados_salvar_veiculos, arquivo, ensure_ascii=False, indent=4)
+   
+   
+   
    with open("catalogo.json","w") as arquivo:
         json.dump(catalago, arquivo, ensure_ascii=False, indent=4)
    with open("Solicitaçoes_serviço.json","w") as arquivo:
@@ -29,7 +46,7 @@ def carregar_json_clientes():
         
     }
     try:
-        with open("dados_para_salvar.json", "r") as arquivo:
+        with open("dados_salvar_clientes.json", "r") as arquivo:
             clientes=json.load(arquivo)
             for cpf, dados in clientes.items():
                atributos = dados["cliente"]
@@ -57,7 +74,9 @@ def carregar_json_veiculos():
             veiculos=json.load(arquivo)
             return veiculos
     except FileNotFoundError:
-        return []
+        return {}
+
+
 def carregar_json_catalogo():
     try:
         with open("catalogo.json", "r") as arquivo:
