@@ -1,6 +1,6 @@
 import json
 from cadastros import Clientes
-
+from cadastros import Veiculo
 def salvar_json(cadastros_clientes,cadastros_veiculos,catalago,Solicitaçoes_serviço):
    dados_salvar_clientes={}
    for cpf, dados in cadastros_clientes.items():
@@ -68,11 +68,29 @@ def carregar_json_clientes():
     
     except FileNotFoundError:
         return {}
+
+
 def carregar_json_veiculos():
+    
+    
     try:
-        with open("cadastros_veiculos.json", "r") as arquivo:
-            veiculos=json.load(arquivo)
-            return veiculos
+        with open("dados_salvar_veiculos.json", "r") as arquivo:
+            dados_veiculos=json.load(arquivo)
+            dic_veiculos={}
+            for placa, dados in dados_veiculos.items():
+                placa=placa
+                atributos=dados
+                
+                objeto_veiculos=Veiculo(
+                    atributos["placa"],
+                    atributos["modelo"],
+                    atributos["proprietario"],
+                    )
+                dic_veiculos[placa]={
+                   "veiculos":objeto_veiculos    
+               } 
+            
+            return dic_veiculos
     except FileNotFoundError:
         return {}
 
